@@ -13,6 +13,7 @@ from weakref import WeakKeyDictionary
 import sys
 from functools import wraps
 import traceback
+import collections
 
 PY2 = sys.version_info[0] == 2
 
@@ -86,7 +87,7 @@ def call_attr(obj, attr, args, kw):
     """
     args_ = []
     for arg in args:
-        if callable(arg):
+        if isinstance(arg, collections.Callable):
             args_.append(arg())
         else:
             args_.append(arg)
@@ -171,9 +172,9 @@ class StepTester(object):
         assert change.stop == slice_.stop
         assert change.length == length
         if adds:
-            range_ = range(*slice_.indices(len(self.real)))
+            range_ = list(range(*slice_.indices(len(self.real))))
         else:
-            range_ = range(*slice_.indices(len(self.real_before)))
+            range_ = list(range(*slice_.indices(len(self.real_before))))
         assert change.range == range_
         assert change.changed_object is self.observable
         assert change_elements == elements
@@ -337,7 +338,7 @@ class TestRemoveElements:
         filled_chain.pop("asd").assert_no_change()
 
     def test_remove(self, chain):
-        chain.extend(range(30))
+        chain.extend(list(range(30)))
         chain.remove(10).assert_remove(10, [10])
         chain.remove(10).assert_no_change()
 

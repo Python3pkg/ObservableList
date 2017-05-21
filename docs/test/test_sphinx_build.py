@@ -21,7 +21,7 @@ WARNING_PATTERN = b"(?:checking consistency\\.\\.\\. )?" \
 def print_bytes(bytes_):
     """Print bytes safely as string."""
     try:
-        print(bytes_.decode())
+        print((bytes_.decode()))
     except UnicodeDecodeError:
         print(bytes_)
 
@@ -39,7 +39,7 @@ def sphinx_build():
             "make coverage", shell=True, cwd=DOCS_DIRECTORY,
             stderr=subprocess.STDOUT
         )
-    print(output.decode())
+    print((output.decode()))
     return output
 
 

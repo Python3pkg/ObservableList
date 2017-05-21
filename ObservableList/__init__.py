@@ -83,7 +83,7 @@ class Change(object):
 
         :rtype: range
         """
-        return range(self._start, self._stop, self._step)
+        return list(range(self._start, self._stop, self._step))
 
     @property
     def changed_object(self):
@@ -119,7 +119,7 @@ class Change(object):
 
     def items(self):
         """Return an iterable over pairs of index and value."""
-        return zip(self.range, self.elements)
+        return list(zip(self.range, self.elements))
 
 
 class AddChange(Change):
@@ -316,7 +316,7 @@ for method_name in REPLACED_METHODS:
     original_method = getattr(list, method_name, None)
     if original_method is not None:
         if PY2:
-            method = method.im_func
+            method = method.__func__
         method.__doc__ = original_method.__doc__
 del method, method_name
 

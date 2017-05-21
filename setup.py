@@ -114,10 +114,10 @@ class LinkIntoSitePackagesCommand(Command):
 
     def run(self):
         assert self.site_packages, "We need a folder to install to."
-        print("link: {} -> {}".format(
+        print(("link: {} -> {}".format(
                   os.path.join(self.site_packages[0], PACKAGE_NAME),
                   self.library_path
-              ))
+              )))
         try:
             if "win" in sys.platform:
                 self.run_windows_link()
@@ -215,25 +215,25 @@ class TagAndDeployCommand(Command):
             exit(1)
         status_lines = subprocess.check_output(["git", "status"]).splitlines()
         current_branch = status_lines[0].strip().split()[-1].decode()
-        print("On branch {}.".format(current_branch))
+        print(("On branch {}.".format(current_branch)))
         if current_branch != self.branch:
-            print("ERROR:\n\tNew tags can only be made from branch \"{}\"."
-                  "".format(self.branch))
-            print("\tYou can use \"git checkout {}\" to switch the branch."
-                  "".format(self.branch))
+            print(("ERROR:\n\tNew tags can only be made from branch \"{}\"."
+                  "".format(self.branch)))
+            print(("\tYou can use \"git checkout {}\" to switch the branch."
+                  "".format(self.branch)))
             exit(1)
         tags_output = subprocess.check_output(["git", "tag"])
         tags = [tag.strip().decode() for tag in tags_output.splitlines()]
         tag = "v" + __version__
         if tag in tags:
-            print("Warning: \n\tTag {} already exists.".format(tag))
-            print("\tEdit the version information in {}".format(
+            print(("Warning: \n\tTag {} already exists.".format(tag)))
+            print(("\tEdit the version information in {}".format(
                     os.path.join(HERE, PACKAGE_NAME, "__init__.py")
-                ))
+                )))
         else:
-            print("Creating tag \"{}\".".format(tag))
+            print(("Creating tag \"{}\".".format(tag)))
             subprocess.check_call(["git", "tag", tag])
-        print("Pushing tag \"{}\" to remote \"{}\".".format(tag, self.remote))
+        print(("Pushing tag \"{}\" to remote \"{}\".".format(tag, self.remote)))
         subprocess.check_call(["git", "push", self.remote, tag])
 
 
